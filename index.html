@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chúc Mừng Sinh Nhật - 4 Năm Yêu Thương</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            /* Palette sang trọng - Navy & Gold */
+            --color-navy:#1a2a4a;
+            --color-navy-light:#2c3e5c;
+            --color-gold:#c9a86c;
+            --color-gold-light:#d4b98a;
+            --color-cream:#faf8f5;
+            --color-warm:#f5f1eb;
+            --color-sand:#e8e2d9;
+            --color-text:#3a3a3a;
+            --color-text-light:#6a6a6a;
+            --color-white:#ffffff;
+            
+            --font-display:'Playfair Display',serif;
+            --font-heading:'Cormorant Garamond',serif;
+            --font-body:'Montserrat',sans-serif
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            font-family:var(--font-body);
+            background:var(--color-cream);
+            color:var(--color-text);
+            line-height:1.8;
+            font-weight:400
+        }
+        
+        /* ===== MUSIC ===== */
+        .music-player{position:fixed;bottom:30px;right:30px;z-index:9998}
+        .music-btn{
+            width:50px;height:50px;
+            border-radius:50%;
+            background:var(--color-navy);
+            border:2px solid var(--color-gold);
+            cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+            box-shadow:0 5px 20px rgba(26,42,74,0.3);
+            transition:all 0.3s;
+            color:var(--color-gold);
+            font-size:1rem
+        }
+        .music-btn:hover{transform:scale(1.05);background:var(--color-navy-light)}
+        .music-btn.playing{animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{box-shadow:0 5px 20px rgba(26,42,74,0.3)}50%{box-shadow:0 5px 35px rgba(201,168,108,0.4)}}
+        
+        /* ===== POPUP ===== */
+        .popup{
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:rgba(26,42,74,0.95);
+            display:flex;align-items:center;justify-content:center;
+            z-index:99999;
+            backdrop-filter:blur(10px)
+        }
+        .popup-content{
+            background:var(--color-cream);
+            padding:60px 50px;
+            border-radius:4px;
+            text-align:center;
+            max-width:90%;
+            width:420px;
+            box-shadow:0 30px 80px rgba(0,0,0,0.3);
+            animation:fade-up 0.6s ease;
+            position:relative
+        }
+        .popup-content::before{
+            content:'';
+            position:absolute;
+            top:15px;left:15px;right:15px;bottom:15px;
+            border:1px solid var(--color-gold);
+            pointer-events:none
+        }
+        @keyframes fade-up{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+        .popup-icon{
+            font-size:3rem;
+            margin-bottom:20px;
+            display:block
+        }
+        .popup-subtitle{
+            font-family:var(--font-body);
+            font-size:0.75rem;
+            letter-spacing:4px;
+            text-transform:uppercase;
+            color:var(--color-gold);
+            margin-bottom:10px
+        }
+        .popup-title{
+            font-family:var(--font-display);
+            font-size:2rem;
+            color:var(--color-navy);
+            margin-bottom:10px
+        }
+        .popup-text{
+            font-family:var(--font-heading);
+            font-size:1.1rem;
+            color:var(--color-text-light);
+            font-style:italic;
+            margin-bottom:30px
+        }
+        .popup-btn{
+            background:var(--color-navy);
+            color:var(--color-gold);
+            border:none;
+            padding:16px 50px;
+            font-size:0.8rem;
+            font-family:var(--font-body);
+            letter-spacing:3px;
+            text-transform:uppercase;
+            cursor:pointer;
+            transition:all 0.3s
+        }
+        .popup-btn:hover{background:var(--color-navy-light)}
+        
+        /* ===== NAVIGATION ===== */
+        .nav{
+            position:fixed;top:0;left:0;width:100%;
+            padding:20px 40px;
+            display:flex;justify-content:space-between;align-items:center;
+            z-index:1000;
+            transition:all 0.4s
+        }
+        .nav.scrolled{background:rgba(250,248,245,0.98);box-shadow:0 2px 20px rgba(0,0,0,0.05)}
+        .nav-logo{
+            font-family:var(--font-display);
+            font-size:1.2rem;
+            color:var(--color-navy);
+            text-decoration:none
+        }
+        .nav-year{
+            font-family:var(--font-body);
+            font-size:0.7rem;
+            letter-spacing:3px;
+            color:var(--color-gold)
+        }
+        
+        /* ===== HERO - FULL SCREEN ELEGANT ===== */
+        .hero{
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            background:var(--color-navy);
+            overflow:hidden
+        }
+        .hero-bg{
+            position:absolute;
+            top:0;left:0;width:100%;height:100%;
+            background:linear-gradient(135deg,var(--color-navy) 0%,var(--color-navy-light) 100%);
+            opacity:0.95
+        }
+        .hero-pattern{
+            position:absolute;
+            top:0;left:0;width:100%;height:100%;
+            opacity:0.03;
+            background-image:radial-gradient(var(--color-gold) 1px,transparent 1px);
+            background-size:30px 30px
+        }
+        
+        .hero-content{
+            position:relative;z-index:2;
+            text-align:center;
+            padding:20px;
+            max-width:800px
+        }
+        
+        .hero-photo{
+            width:200px;height:200px;
+            border-radius:50%;
+            margin:0 auto 40px;
+            overflow:hidden;
+            border:4px solid var(--color-gold);
+            box-shadow:0 20px 50px rgba(0,0,0,0.3);
+            position:relative
+        }
+        .hero-photo img{width:100%;height:100%;object-fit:cover}
+        .hero-photo::after{
+            content:'';
+            position:absolute;
+            top:-10px;left:-10px;right:-10px;bottom:-10px;
+            border:1px solid rgba(201,168,108,0.3);
+            border-radius:50%
+        }
+        
+        .hero-subtitle{
+            font-family:var(--font-body);
+            font-size:0.7rem;
+            letter-spacing:5px;
+            text-transform:uppercase;
+            color:var(--color-gold);
+            margin-bottom:15px
+        }
+        .hero-title{
+            font-family:var(--font-display);
+            font-size:clamp(2.5rem,8vw,5rem);
+            color:var(--color-white);
+            font-weight:400;
+            line-height:1.1;
+            margin-bottom:20px
+        }
+        .hero-name{
+            font-family:var(--font-display);
+            font-size:clamp(1.5rem,5vw,2.5rem);
+            color:var(--color-gold);
+            font-style:italic;
+            margin-bottom:20px
+        }
+        .hero-age{
+            display:inline-flex;
+            align-items:center;
+            gap:15px;
+            margin-bottom:30px
+        }
+        .hero-age-line{width:50px;height:1px;background:var(--color-gold)}
+        .hero-age-number{
+            font-family:var(--font-display);
+            font-size:4rem;
+            color:var(--color-gold);
+            line-height:1
+        }
+        .hero-date{
+            font-size:0.85rem;
+            color:rgba(255,255,255,0.7);
+            letter-spacing:2px
+        }
+        
+        .hero-scroll{
+            position:absolute;
+            bottom:40px;left:50%;
+            transform:translateX(-50%);
+            color:var(--color-gold);
+            font-size:0.7rem;
+            letter-spacing:3px;
+            text-transform:uppercase;
+            display:flex;flex-direction:column;align-items:center;gap:10px
+        }
+        .hero-scroll-line{
+            width:1px;height:50px;
+            background:linear-gradient(to bottom,var(--color-gold),transparent);
+            animation:scroll-hint 2s ease infinite
+        }
+        @keyframes scroll-hint{0%,100%{opacity:1;height:50px}50%{opacity:0.5;height:30px}}
+        
+        /* ===== SECTION COMMON ===== */
+        .section{padding:120px 20px}
+        .section-header{text-align:center;margin-bottom:60px}
+        .section-subtitle{
+            font-family:var(--font-body);
+            font-size:0.7rem;
+            letter-spacing:5px;
+            text-transform:uppercase;
+            color:var(--color-gold);
+            margin-bottom:10px
+        }
+        .section-title{
+            font-family:var(--font-display);
+            font-size:clamp(2rem,5vw,3rem);
+            color:var(--color-navy);
+            font-weight:400
+        }
+        .section-divider{
+            width:60px;height:1px;
+            background:var(--color-gold);
+            margin:25px auto
+        }
+        
+        /* ===== PROLOGUE - CÂU CHUYỆN MỞ ĐẦU ===== */
+        .prologue{
+            background:var(--color-cream);
+            text-align:center
+        }
+        .prologue-content{
+            max-width:700px;
+            margin:0 auto
+        }
+        .prologue-icon{
+            font-size:3rem;
+            margin-bottom:30px;
+            opacity:0.8
+        }
+        .prologue-text{
+            font-family:var(--font-heading);
+            font-size:clamp(1.2rem,3vw,1.5rem);
+            color:var(--color-text);
+            line-height:2.2;
+            font-style:italic
+        }
+        .prologue-text .highlight{
+            color:var(--color-navy);
+            font-weight:600
+        }
+        .prologue-signature{
+            margin-top:40px;
+            font-family:var(--font-display);
+            font-size:1.3rem;
+            color:var(--color-gold)
+        }
+        
+        /* ===== JOURNEY - 4 NĂM HÀNH TRÌNH ===== */
+        .journey{background:var(--color-warm)}
+        .journey-timeline{
+            max-width:900px;
+            margin:0 auto;
+            position:relative
+        }
+        .journey-timeline::before{
+            content:'';
+            position:absolute;
+            left:50%;
+            transform:translateX(-50%);
+            top:0;bottom:0;
+            width:1px;
+            background:linear-gradient(to bottom,transparent,var(--color-gold),var(--color-gold),transparent)
+        }
+        
+        .journey-year{
+            display:flex;
+            align-items:center;
+            margin-bottom:100px;
+            position:relative
+        }
+        .journey-year:last-child{margin-bottom:0}
+        .journey-year:nth-child(odd){flex-direction:row}
+        .journey-year:nth-child(even){flex-direction:row-reverse}
+        
+        .journey-content{
+            width:calc(50% - 60px);
+            padding:40px;
+            background:var(--color-white);
+            box-shadow:0 15px 50px rgba(0,0,0,0.05);
+            position:relative
+        }
+        .journey-year:nth-child(odd) .journey-content{text-align:right}
+        .journey-year:nth-child(even) .journey-content{text-align:left}
+        
+        .journey-number{
+            position:absolute;
+            left:50%;
+            transform:translateX(-50%);
+            width:60px;height:60px;
+            background:var(--color-navy);
+            border:3px solid var(--color-gold);
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-family:var(--font-display);
+            font-size:1.5rem;
+            color:var(--color-gold);
+            z-index:2
+        }
+        
+        .journey-image{
+            width:calc(50% - 60px);
+            aspect-ratio:4/3;
+            overflow:hidden;
+            background:var(--color-sand)
+        }
+        .journey-image img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+        .journey-content:hover + .journey-number + .journey-image img,
+        .journey-image:hover img{transform:scale(1.05)}
+        .journey-image-placeholder{
+            width:100%;height:100%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:2rem;color:var(--color-text-light);opacity:0.3
+        }
+        
+        .journey-age{
+            font-family:var(--font-body);
+            font-size:0.7rem;
+            letter-spacing:3px;
+            text-transform:uppercase;
+            color:var(--color-gold);
+            margin-bottom:10px
+        }
+        .journey-title{
+            font-family:var(--font-display);
+            font-size:1.5rem;
+            color:var(--color-navy);
+            margin-bottom:15px
+        }
+        .journey-text{
+            font-size:0.95rem;
+            color:var(--color-text-light);
+            line-height:1.9
+        }
+        
+        /* ===== LETTER - THƯ GỬI CON ===== */
+        .letter{
+            background:var(--color-navy);
+            position:relative;
+            overflow:hidden
+        }
+        .letter::before{
+            content:'"';
+            position:absolute;
+            top:50px;left:50%;
+            transform:translateX(-50%);
+            font-family:var(--font-display);
+            font-size:20rem;
+            color:rgba(255,255,255,0.02);
+            line-height:1
+        }
+        .letter .section-subtitle{color:var(--color-gold)}
+        .letter .section-title{color:var(--color-white)}
+        .letter .section-divider{background:var(--color-gold)}
+        
+        .letter-content{
+            max-width:750px;
+            margin:0 auto;
+            text-align:center;
+            position:relative;
+            z-index:1
+        }
+        .letter-greeting{
+            font-family:var(--font-display);
+            font-size:1.8rem;
+            color:var(--color-gold);
+            margin-bottom:30px;
+            font-style:italic
+        }
+        .letter-body{
+            font-family:var(--font-heading);
+            font-size:1.15rem;
+            color:rgba(255,255,255,0.9);
+            line-height:2.3;
+            text-align:left
+        }
+        .letter-body p{margin-bottom:25px}
+        .letter-body p:last-child{margin-bottom:0}
+        .letter-signature{
+            margin-top:50px;
+            font-family:var(--font-display);
+            font-size:1.5rem;
+            color:var(--color-gold);
+            font-style:italic
+        }
+        .letter-hearts{
+            margin-top:20px;
+            font-size:1.2rem;
+            letter-spacing:15px;
+            opacity:0.6;
+            color:var(--color-gold)
+        }
+        
+        /* ===== GALLERY ===== */
+        .gallery{background:var(--color-cream)}
+        .gallery-grid{
+            max-width:1000px;
+            margin:0 auto;
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:15px
+        }
+        .gallery-item{
+            aspect-ratio:1;
+            overflow:hidden;
+            background:var(--color-sand);
+            cursor:pointer
+        }
+        .gallery-item img{
+            width:100%;height:100%;
+            object-fit:cover;
+            transition:transform 0.5s
+        }
+        .gallery-item:hover img{transform:scale(1.1)}
+        .gallery-placeholder{
+            width:100%;height:100%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:2rem;color:var(--color-text-light);opacity:0.3
+        }
+        
+        /* ===== WISHES ===== */
+        .wishes{background:var(--color-warm)}
+        .wishes-grid{
+            max-width:900px;
+            margin:0 auto;
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:30px
+        }
+        .wish-card{
+            background:var(--color-white);
+            padding:40px 30px;
+            text-align:center;
+            box-shadow:0 10px 40px rgba(0,0,0,0.03)
+        }
+        .wish-icon{
+            font-size:2rem;
+            margin-bottom:20px;
+            opacity:0.8
+        }
+        .wish-title{
+            font-family:var(--font-display);
+            font-size:1.3rem;
+            color:var(--color-navy);
+            margin-bottom:15px
+        }
+        .wish-text{
+            font-size:0.9rem;
+            color:var(--color-text-light);
+            line-height:1.8
+        }
+        
+        /* ===== CLOSING ===== */
+        .closing{
+            background:var(--color-cream);
+            text-align:center;
+            padding:100px 20px
+        }
+        .closing-age{
+            font-family:var(--font-display);
+            font-size:clamp(8rem,25vw,15rem);
+            color:var(--color-navy);
+            line-height:1;
+            opacity:0.1;
+            margin-bottom:-50px
+        }
+        .closing-text{
+            font-family:var(--font-display);
+            font-size:clamp(1.5rem,4vw,2.5rem);
+            color:var(--color-navy);
+            position:relative;
+            z-index:1
+        }
+        .closing-subtext{
+            font-family:var(--font-heading);
+            font-size:1.2rem;
+            color:var(--color-text-light);
+            font-style:italic;
+            margin-top:15px
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer{
+            background:var(--color-navy);
+            color:var(--color-white);
+            padding:60px 20px;
+            text-align:center
+        }
+        .footer-title{
+            font-family:var(--font-display);
+            font-size:2rem;
+            margin-bottom:10px
+        }
+        .footer-name{
+            font-family:var(--font-display);
+            font-size:1.3rem;
+            color:var(--color-gold);
+            font-style:italic;
+            margin-bottom:10px
+        }
+        .footer-date{
+            font-size:0.8rem;
+            opacity:0.7;
+            letter-spacing:3px;
+            margin-bottom:25px
+        }
+        .footer-message{
+            font-family:var(--font-heading);
+            font-size:1rem;
+            font-style:italic;
+            opacity:0.8;
+            max-width:400px;
+            margin:0 auto
+        }
+        .footer-hearts{
+            margin-top:30px;
+            color:var(--color-gold);
+            letter-spacing:10px;
+            opacity:0.6
+        }
+        
+        /* ===== LIGHTBOX ===== */
+        .lightbox{
+            display:none;position:fixed;
+            top:0;left:0;width:100%;height:100%;
+            background:rgba(26,42,74,0.95);
+            z-index:99999;
+            align-items:center;justify-content:center;
+            backdrop-filter:blur(5px)
+        }
+        .lightbox.active{display:flex}
+        .lightbox img{max-width:90%;max-height:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+        .lightbox-close{
+            position:absolute;top:30px;right:30px;
+            font-size:2rem;color:var(--color-gold);cursor:pointer;
+            opacity:0.8;transition:opacity 0.3s
+        }
+        .lightbox-close:hover{opacity:1}
+        
+        /* ===== FOOTER CREDIT ===== */
+        .footer-credit{
+            margin-top:30px;
+            padding-top:20px;
+            border-top:1px solid rgba(255,255,255,0.1);
+            font-size:0.7rem;
+            opacity:0.5;
+            letter-spacing:1px
+        }
+        .footer-credit a{
+            color:var(--color-gold);
+            text-decoration:none;
+            transition:opacity 0.3s
+        }
+        .footer-credit a:hover{opacity:1}
+        
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:900px){
+            .journey-timeline::before{left:30px}
+            .journey-year{flex-direction:column!important;padding-left:70px}
+            .journey-content{width:100%;text-align:left!important;margin-bottom:20px}
+            .journey-image{width:100%}
+            .journey-number{left:30px;transform:none;width:50px;height:50px;font-size:1.2rem}
+        }
+        @media(max-width:768px){
+            .nav{padding:15px 20px}
+            .hero-photo{width:160px;height:160px}
+            .section{padding:80px 20px}
+            .gallery-grid{
+                grid-template-columns:repeat(2,1fr);
+                grid-template-rows:repeat(3,150px)
+            }
+            .gallery-item:nth-child(1){grid-column:span 2;grid-row:span 1}
+            .gallery-item:nth-child(4){grid-column:span 1}
+            .letter-content{padding:0 10px}
+            .closing-age{font-size:8rem;margin-bottom:-30px}
+        }
+    </style>
+</head>
+<body>
+    <!-- Music -->
+    <audio id="bgMusic" loop>
+        <source src="birthday-music.mp3" type="audio/mpeg">
+    </audio>
+    <div class="music-player">
+        <button class="music-btn" id="musicBtn">♪</button>
+    </div>
+    
+    <!-- Popup Welcome -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="popup-icon">🎂</span>
+            <p class="popup-subtitle">Happy Birthday</p>
+            <h2 class="popup-title">Chúc Mừng Sinh Nhật!</h2>
+            <p class="popup-text">🎊Một món quà nhỏ dành tặng Tinho🎊</p>
+            <button class="popup-btn" id="startBtn">Mở Quà👌</button>
+        </div>
+    </div>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">×</span>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#" class="nav-logo">Chúc Mừng Sinh Nhật</a>
+        <span class="nav-year">2021 — 2025</span>
+    </nav>
+    
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+            <div class="hero-photo">
+                <img src="avatar.jpg" alt="Bé" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232c3e5c%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2230%22 fill=%22%23c9a86c%22>✦</text></svg>'">
+            </div>
+            <p class="hero-subtitle">Happy Birthday</p>
+            <h1 class="hero-title">ANH TUẤN</h1>
+            <p class="hero-name">Tinho</p>
+            <div class="hero-age">
+                <span class="hero-age-line"></span>
+                <span class="hero-age-number">4</span>
+                <span class="hero-age-line"></span>
+            </div>
+            <p class="hero-date">21 Tháng 12, 2021</p>
+        </div>
+        <div class="hero-scroll">
+            <span></span>
+            <div class="hero-scroll-line"></div>
+        </div>
+    </section>
+    
+    <!-- PROLOGUE -->
+    <section class="section prologue">
+        <div class="prologue-content">
+            <div class="prologue-icon">🙆‍♂️</div>
+            <p class="prologue-text">
+                <span class="highlight">4 năm trước</span>, Vào ngày này Tinho nhà chúng ta đã chào đời — mang theo niềm vui và hạnh phúc đến cho cả đại gia đình. 
+                <br><br>
+                Và thời gian trôi qua, được chứng kiến các khoảnh khắc lớn lên, từ lúc bé tí xíu với tiếng bập bẹ tập nói đến lúc đi học và có những câu nói không ai ngờ như ông cụ non lúc này.
+                <br><br>
+                Nên là người cô yêu dấu này lần đầu tiên ghi lại <span class="highlight">những khoảng khắc đáng iu </span>, để lưu giữ và gửi đến cho thanh niên bé nhỏ của gia đình.
+            </p>
+            <p class="prologue-signature">— Cô Hiên Hiên😁 —</p>
+        </div>
+    </section>
+    
+    <!-- JOURNEY - 4 NĂM -->
+    <section class="section journey">
+        <div class="section-header">
+            <p class="section-subtitle">Our Memories</p>
+            <h2 class="section-title">Hành trình trưởng thành</h2>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div class="journey-timeline">
+            <!-- Year 1 -->
+            <div class="journey-year">
+                <div class="journey-content">
+                    <p class="journey-age">Năm đầu tiên</p>
+                    <h3 class="journey-title">Thiên Thần Nhỏ</h3>
+                    <p class="journey-text">
+                        Tinho chào đời, bé bỏng và đáng yêu. Chào đời vào thời điểm dịch Covid bùng phát lần đầu nên là cả nhà ai cũng lo lắng không thôi.
+                    </p>
+                </div>
+                <div class="journey-number">1</div>
+                <div class="journey-image">
+                    <img src="year1.jpg" alt="Year 1" onerror="this.outerHTML='<div class=journey-image-placeholder>✦</div>'">
+                </div>
+            </div>
+            
+            <!-- Year 2.1 -->
+            <div class="journey-year">
+                <div class="journey-content">
+                    <p class="journey-age">Năm thứ hai</p>
+                    <h3 class="journey-title">Được 1 tuổi</h3>
+                    <p class="journey-text">
+                        Tinho được 1 tuổi. Lúc này là rất thích ăn trái cây cứ trái cây là sẽ thích, mặt thì lúc nào cũng cau mày lại, khó tính lắm  và có cái thế ngủ rất lạ lùng 🤣🤣
+                    </p>
+                </div>
+                <div class="journey-number">2</div>
+                <div class="journey-image">
+                    <img src="year2.jpg" alt="Year 2" onerror="this.outerHTML='<div class=journey-image-placeholder>✦</div>'">
+                </div>
+            </div>
+            
+			<!-- Year 3 -->
+            <div class="journey-year">
+                <div class="journey-content">
+                    <p class="journey-age">Năm thứ hai</p>
+                    <h3 class="journey-title">Những Bước Đi Đầu Tiên</h3>
+                    <p class="journey-text">
+                        Lúc này là về quê ăn tết nè. Đoạn này là đã biết chạy lững thững rồi, còn được ngồi trên xe đạp chở quanh sân nhà...
+                    </p>
+                </div>
+                <div class="journey-number">3</div>
+                <div class="journey-image">
+                    <img src="year3.jpg" alt="Year 3" onerror="this.outerHTML='<div class=journey-image-placeholder>✦</div>'">
+                </div>
+            </div>
+            
+            <!-- Year 4 -->
+            <div class="journey-year">
+                <div class="journey-content">
+                    <p class="journey-age">Năm thứ ba</p>
+                    <h3 class="journey-title">Cá Tính Dần Hình Thành</h3>
+                    <p class="journey-text">
+                        Thanh niên bắt đầu có những sở thích riêng, những trò nghịch ngợm, cái miệng thì nói không ngừng nghỉ.
+                    </p>
+                </div>
+                <div class="journey-number">4</div>
+                <div class="journey-image">
+                    <img src="year4.jpg" alt="Year 4" onerror="this.outerHTML='<div class=journey-image-placeholder>✦</div>'">
+                </div>
+            </div>
+            
+            <!-- Year 5 -->
+            <div class="journey-year">
+                <div class="journey-content">
+                    <p class="journey-age">Năm thứ tư</p>
+                    <h3 class="journey-title">Tinho Lớn Rồi</h3>
+                    <p class="journey-text">
+                        Tinho nhà ta đã lớn rồi. Đã biết kể chuyện, biết đếm số, biết vẽ tranh, biết lắp ghép các trò chơi và hay giận dỗi cả nhà 🤣.
+                    </p>
+                </div>
+                <div class="journey-number">5</div>
+                <div class="journey-image">
+                    <img src="year5.jpg" alt="Year 5" onerror="this.outerHTML='<div class=journey-image-placeholder>✦</div>'">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- LETTER -->
+    <section class="section letter">
+        <div class="section-header">
+            <p class="section-subtitle">With Love</p>
+            <h2 class="section-title">Lời Yêu Thương </h2>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div class="letter-content">
+            <p class="letter-greeting">Tinho yêu quý,</p>
+            <div class="letter-body">
+                <p>
+                    4 năm. 1460 ngày. Hàng ngàn khoảnh khắc. Và vô vàn kỷ niệm đẹp trong hành trình lớn lên từng ngày.
+                </p>
+                <p>
+                    Thật vui vì trong hành trình này cô Huyên cũng được xuất hiện nhiều bên cạnh cũng chứng kiến được nhiều hình ảnh dễ thương có, nghịch ngợm có, bị phạt cũng có 😁
+                </p>
+                <p>
+                    Giờ đã được 4 tuổi rồi nhé chàng trai với đôi mắt sáng, nụ cười trong trẻo, và rất tình cảm. Cô Huyên chúc Tinho tuổi mới luôn khỏe mạnh, hạnh phúc, và chăm ngoan học tập nhé.
+                </p>
+                <p>
+                    Đi học mà bị bạn bắt nạt là phải ăn hiếp lại bạn luôn nha, mà không ăn hiếp lại thì mình về méc cô, méc bố mẹ nhaaaa!
+                </p>
+            </div>
+			<p class="letter-signature">Happy Birthday,<br>Tinho</p>
+            <p class="letter-hearts">♥ ♥ ♥</p>
+        </div>
+    </section>
+    
+    <!-- GALLERY -->
+    <section class="section gallery">
+        <div class="section-header">
+            <p class="section-subtitle">Memories</p>
+            <h2 class="section-title">Khoảnh Khắc Đáng Yêu</h2>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="photo1.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo2.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo3.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo4.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo5.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo6.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+			<div class="gallery-item"><img src="photo7.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo8.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo9.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo10.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo11.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+			<div class="gallery-item"><img src="photo12.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo13.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo14.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo15.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo16.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+			<div class="gallery-item"><img src="photo17.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo18.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo19.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo20.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo21.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+			<div class="gallery-item"><img src="photo22.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo23.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo24.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo25.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+			<div class="gallery-item"><img src="photo26.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+			<div class="gallery-item"><img src="photo27.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo28.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+            <div class="gallery-item"><img src="photo29.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+			<div class="gallery-item"><img src="photo30.jpg" alt="Memory" onerror="this.outerHTML='<div class=gallery-placeholder>✦</div>'"></div>
+        </div>
+    </section>
+    
+    <!-- WISHES -->
+    <section class="section wishes">
+        <div class="section-header">
+            <p class="section-subtitle">Our Wishes</p>
+            <h2 class="section-title">Lời Chúc </h2>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div class="wishes-grid">
+            <div class="wish-card">
+                <div class="wish-icon">🍜</div>
+                <h3 class="wish-title">Sức Khỏe</h3>
+                <p class="wish-text">Chúc Tinho luôn mạnh khỏe, hay ăn chóng lớn, thử được tất cả các món ngon trên thế giới này .</p>
+            </div>
+            <div class="wish-card">
+                <div class="wish-icon">💕</div>
+                <h3 class="wish-title">Hạnh Phúc</h3>
+                <p class="wish-text">Chúc cháu luôn vui vẻ, hạnh phúc. Nụ cười của cháu là niềm vui của cả nhà.</p>
+            </div>
+            <div class="wish-card">
+                <div class="wish-icon">💪</div>
+                <h3 class="wish-title">Mạnh mẽ</h3>
+                <p class="wish-text">Dù có đi đâu, ở đâu, làm gì, cũng sẽ luôn mạnh mẽ, không sợ điều gì nhé.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CLOSING -->
+    <section class="closing">
+        <div class="closing-age">4</div>
+        <p class="closing-text">Happy 4th Birthday, Tinho</p>
+        <p class="closing-subtext">"Từng ngày qua, tình yêu thươg chỉ lớn thêm"</p>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer class="footer">
+        <h2 class="footer-title">Happy Birthday</h2>
+        <p class="footer-name">Anh Tuấn</p>
+        <p class="footer-date">21 . 12 . 2021 — 21 . 1 . 2025</p>
+        <p class="footer-message">"Thiên thần nhỏ của cả gia đình"</p>
+        <p class="footer-hearts">♥ ♥ ♥</p>
+		<p class="footer-credit">Thiết kế và phát triển bởi <a href="#">Huyên Nguyễn</a></p>
+    </footer>
+    
+    <script>
+    // Music
+    var isPlaying=false,bgMusic=document.getElementById('bgMusic'),musicBtn=document.getElementById('musicBtn'),popup=document.getElementById('popup');
+    document.getElementById('startBtn').onclick=function(){
+        popup.style.display='none';
+        bgMusic.play().then(function(){musicBtn.classList.add('playing');isPlaying=true}).catch(function(){})
+    };
+    musicBtn.onclick=function(){
+        if(isPlaying){bgMusic.pause();musicBtn.classList.remove('playing');isPlaying=false}
+        else{bgMusic.play().then(function(){musicBtn.classList.add('playing');isPlaying=true}).catch(function(){})}
+    };
+    
+    // Nav scroll
+    window.onscroll=function(){document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)};
+    
+    // Lightbox
+    document.querySelectorAll('.gallery-item img, .journey-image img, .hero-photo img').forEach(function(img){
+        img.onclick=function(){
+            if(this.src&&!this.src.includes('data:image')){
+                document.getElementById('lightboxImg').src=this.src;
+                document.getElementById('lightbox').classList.add('active')
+            }
+        }
+    });
+    document.getElementById('lightboxClose').onclick=function(){document.getElementById('lightbox').classList.remove('active')};
+    document.getElementById('lightbox').onclick=function(e){if(e.target===this)this.classList.remove('active')};
+    </script>
+</body>
+</html>
